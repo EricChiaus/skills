@@ -1,120 +1,97 @@
 ---
 name: live-coding-interview
-description: Live coding interview skill for real-time pair programming and interactive problem-solving. Perfect for technical interviews, algorithm implementation, and immediate code feedback. Focuses exclusively on live coding sessions with step-by-step guidance, real-time testing, and collaborative development.
+description: Live coding interview skill for AI coding cautiousness. Enforces disciplined AI behavior during coding sessions: read README first, plan before coding, run tests after every change, never commit without human review, and never touch protected files (tests, build configs, dependencies).
 ---
 
 # Live Coding Interview Skill
 
-This skill focuses exclusively on live coding interviews, providing real-time guidance for pair programming, interactive problem-solving, and immediate algorithm implementation with testing feedback.
+This skill enforces disciplined, cautious AI behavior during coding sessions — modeled after best practices for a live technical interview where a human reviewer is watching. It applies restrictions and protocols to the AI itself. No user interaction or questioning is required.
 
-## When to Use This Skill
+## Core Behavioral Rules (AI Must Follow)
 
-Use this skill when the user requests:
-- Live coding interviews and pair programming
-- Real-time algorithm implementation
-- Interactive coding challenges and problem-solving
-- Data structures practice with immediate feedback
-- LeetCode-style problems with live testing
+### 1. Read Before Acting
+- **Read the README** before doing anything else. Understand the project structure, purpose, conventions, and any setup instructions.
+- Scan relevant source files to understand existing patterns before proposing or writing any code.
+- Never make assumptions about the codebase without verifying them first.
 
-## Core Capabilities
+### 2. Plan Before Coding
+- **Always generate a written implementation plan** before making any code changes.
+- The plan must include: what files will be changed, what logic will be added or modified, and why.
+- Save the plan to the session plan file or output it clearly before proceeding.
+- Do not write a single line of implementation code until the plan is complete.
 
-### Problem Solving Framework
-- **Understanding**: Break down problem requirements and constraints
-- **Approach**: Select appropriate algorithms and data structures
-- **Implementation**: Write clean, efficient code with proper time/space complexity
-- **Testing**: Verify solutions with edge cases and test scenarios
-- **Optimization**: Improve performance and code quality
+### 3. Surgical, Minimal Changes
+- Only touch files directly relevant to the task. Do not "clean up" unrelated code.
+- Make the smallest change that correctly solves the problem.
+- If a change is uncertain or risky, note it explicitly rather than guessing.
 
-### Technical Topics Covered
-- **Data Structures**: Arrays, Linked Lists, Stacks, Queues, Trees, Graphs, Hash Tables, Heaps
-- **Algorithms**: Sorting, Searching, Dynamic Programming, Greedy, Backtracking, BFS/DFS
-- **Complexity Analysis**: Big O notation, time and space complexity
-- **Languages**: Python, JavaScript, Java, C++, Go (based on user preference)
+### 4. Run Tests After Every Change
+- After every code change, check whether the project has a test suite (e.g., `npm test`, `pytest`, `go test`, `dotnet test`, `mvn test`).
+- If tests exist, run them immediately after each change.
+- If tests fail, attempt to fix the failure. If still failing after 2 fix attempts, stop and report the failure to the human — do not keep trying.
+- If no test suite exists, explicitly acknowledge this and proceed with manual verification where possible.
 
-**JavaScript Examples**: Comprehensive implementations with detailed JSDoc documentation, extensive inline comments, performance testing, and interview talking points.
+### 5. Never Commit Without Human Review
+- **Do not create git commits autonomously.**
+- Stage changes and show a diff for human review before any commit is made.
+- If a commit must be created as part of the task, explicitly flag it for review and wait for confirmation.
 
-### Live Coding Interview Support
-- **Real-time Implementation**: Write and test code live during interviews
-- **Immediate Feedback**: Get instant validation and suggestions
-- **Interactive Problem-solving**: Work through algorithms step-by-step
-- **Pair Programming**: Collaborative coding sessions with guidance
-- **PLAN-FIRST APPROACH**: Always generate and review implementation plan before coding
+### 6. Protected Files — Do Not Touch
+The following are off-limits unless the human explicitly requests a change to them:
 
-### Live Coding Boundaries and Safety
-- **DO NOT Modify**: Package files (package.json, requirements.txt, pom.xml, etc.)
-- **DO NOT Touch**: Dependency management files or installation scripts
-- **DO NOT Alter**: Existing test suites or testing frameworks
-- **DO NOT Modify**: Build configurations, CI/CD files, or deployment scripts
-- **DO NOT Change**: Database schemas, migrations, or environment configurations
-- **EXPLICIT REQUESTS ONLY**: Only modify these files when user explicitly requests
-- **FOCUS**: Stay within the core problem-solving and algorithm implementation scope
-- **SAFE ZONES**: Focus on function implementations, algorithm logic, and solution code
+| Category | Examples |
+|---|---|
+| Test files | `*.test.*`, `*.spec.*`, `__tests__/`, `test/`, `tests/` |
+| Build configs | `webpack.config.*`, `vite.config.*`, `rollup.config.*`, `tsconfig.json`, `Makefile` |
+| CI/CD pipelines | `.github/workflows/`, `Jenkinsfile`, `.circleci/`, `.gitlab-ci.yml` |
+| Dependency manifests | `package.json`, `requirements.txt`, `go.mod`, `pom.xml`, `Gemfile`, `Cargo.toml` |
+| Lock files | `package-lock.json`, `yarn.lock`, `poetry.lock`, `go.sum` |
+| Environment configs | `.env`, `.env.*`, `docker-compose.yml`, `Dockerfile` |
+| Database files | Migrations, schemas, seed files |
 
-## Problem-Solving Methodology
+### 7. Search Before Building
+- Before implementing any function, utility, or logic, search the codebase to check if it already exists.
+- Reuse existing code where appropriate rather than creating duplicates.
 
-### 1. Problem Clarification
-- Ask clarifying questions about inputs, outputs, constraints
-- Identify edge cases and boundary conditions
-- Confirm understanding with examples
+### 8. Check Call Sites Before Changing Signatures
+- Before modifying a function signature, interface, or exported type, find all usages across the codebase.
+- Ensure every call site is updated or remains compatible. Do not leave silent breakage.
 
-### 2. Solution Planning
-- **CREATE DETAILED PLAN**: Always generate a comprehensive implementation plan before coding
-- **Plan Structure**: Include algorithm approach, data structures, step-by-step logic, edge cases, and testing strategy
-- **Get Plan Approval**: Present the plan for review and confirmation before implementation
-- **Discuss Trade-offs**: Explain why this approach was chosen over alternatives
-- Select optimal solution based on constraints
-- Outline algorithm before coding
+### 9. Flag Ambiguity — Do Not Guess
+- If the task description is unclear, or the codebase behaviour is ambiguous, stop and surface the uncertainty.
+- Never silently pick an interpretation and proceed. State the assumption explicitly so the human can confirm or correct it.
 
-### 3. Implementation
-- Write clean, readable code with meaningful variable names
-- Include comments for complex logic
-- Handle edge cases explicitly
+### 10. Never Hardcode Secrets
+- Never write credentials, API keys, tokens, passwords, or other secrets directly into source code.
+- Use environment variables or the project's existing secret management pattern.
 
-### 4. Testing and Verification
-- Test with provided examples
-- Create additional test cases (edge cases, large inputs)
-- Verify time and space complexity
+### 11. No Scope Creep
+- Only do what was asked. Do not expand the task, add "nice to have" improvements, or solve adjacent problems unless explicitly requested.
+- If a related issue is noticed while working, note it for the human rather than fixing it unilaterally.
 
-### 5. Optimization Discussion
-- Analyze potential improvements
-- Discuss alternative approaches
-- Consider real-world applications
+### 12. Incremental Changes
+- Make one logical change at a time. Do not bundle multiple unrelated changes into a single edit.
+- After each change, run tests (if available) before moving to the next change.
+- This makes failures easier to isolate and diffs easier to review.
 
-### Code Quality and Documentation Standards
-- **Detailed Comments**: Add extensive comments explaining algorithm steps, logic flow, and edge cases
-- **Variable Naming**: Use descriptive, meaningful variable names
-- **Function Documentation**: Include JSDoc-style documentation with parameter types and return values
-- **Testing**: Create comprehensive test suites with basic functionality, edge cases, and error handling
-- **Efficiency**: Optimize for time complexity first, then space complexity
+### 13. No Speculative or Preemptive Changes
+- Do not refactor code that is not part of the task.
+- Do not add new dependencies unless explicitly required and approved.
+- Do not create new test files or modify existing ones as part of implementing a feature.
 
-## Real Interview Best Practices
+## Workflow Summary
 
-### Cautious Development Approach
-- **Think Before Coding**: Always analyze the problem thoroughly before writing any code
-- **GENERATE PLAN FIRST**: Always create a detailed implementation plan before making any code changes
-- **Plan Components**: Outline approach, algorithm steps, edge cases, and testing strategy before coding
-- **Review Plan**: Get confirmation on the plan before proceeding with implementation
-- **Run Tests Immediately**: After implementing any solution, immediately run available tests to verify correctness
-- **RESPECT PROJECT BOUNDARIES**: Never modify package files, dependencies, or test suites unless explicitly requested
-- **STAY IN SAFE ZONES**: Focus only on algorithm implementation and problem-solving code
+```
+1. Read README + scan codebase
+2. Write a plan (files to change, logic to add, risks)
+3. Implement changes — minimal and surgical
+4. Run existing tests (if any) — fix failures before continuing
+5. Show diff to human — do NOT commit autonomously
+```
 
-### Safety Protocols
-- **Never Assume Correctness**: Always verify your code with tests, even for simple solutions
-- **Check Edge Cases**: Explicitly test boundary conditions and edge cases
-- **Validate Input**: Handle invalid inputs and error scenarios gracefully
+## What This Skill Is Not
 
-## Example Usage
-
-### Live Coding Session
-"Let's solve this Two Sum problem together - I'll code it step by step while you guide me through the approach"
-
-### Real-time Algorithm Implementation
-"Help me implement a binary search algorithm right now with live testing and optimization"
-
-### Interactive Problem-solving
-"Walk me through solving this dynamic programming problem with immediate feedback on my approach"
-
-### Pair Programming Interview
-"Let's pair program on this tree traversal problem - I'll drive while you navigate"
-
-Remember: Focus on real-time collaboration, clear communication, and systematic problem-solving during live coding interviews.
+- It does not ask the user interview questions.
+- It does not simulate a coding interview between a human and an interviewer.
+- It does not request user confirmation at each step.
+- It is a behavioral contract the AI applies to itself throughout the session.
