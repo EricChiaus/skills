@@ -29,9 +29,11 @@ A single, structured output covering:
 5. **Entry points** — where execution starts (server, CLI, app bootstrap, etc.)
 6. **Data flow** — high-level path from input to output (request → handler → service → DB, etc.)
 7. **Patterns in use** — architectural and coding conventions detected in the codebase
-8. **Test setup** — test framework, location of tests, how to run them
-9. **Build & dev tooling** — how to install, build, and run the project locally
-10. **Gotchas and notable constraints** — anything unusual, deprecated, or worth flagging
+8. **Data model** — main entities, relationships, and database engine
+9. **API surface** — API style, route groups, auth mechanism, request/response format
+10. **Test setup** — test framework, location of tests, how to run them
+11. **Build & dev tooling** — how to install, build, and run the project locally
+12. **Gotchas and notable constraints** — anything unusual, deprecated, or worth flagging
 
 ## How to Run the Exploration
 
@@ -111,13 +113,55 @@ Sample 3–5 source files and note:
   - *C#*: LINQ usage, async patterns, nullable reference types
 - **API style** (if applicable): REST, GraphQL, gRPC, tRPC, message queues
 
-### Step 7: Find the Test Setup
-- Locate the test directory and identify the test framework.
+### Step 7: Read the Database Layer
+Look for schema definitions, migrations, and ORM models to understand the data model.
+
+**Where to look:**
+| Location | What it tells you |
+|---|---|
+| `migrations/`, `db/migrate/`, `alembic/versions/` | Schema history, table names, columns, indexes, FKs |
+| `*.sql` files | Raw schema definitions or seed data |
+| ORM model files (`models/`, `entities/`, `schema.prisma`, `*.entity.ts`) | Table structure, relationships, field types |
+| `prisma/schema.prisma` | Full Prisma schema with models and relations |
+| `typeorm` / `sequelize` / `sqlalchemy` / `hibernate` entities | ORM-mapped tables and associations |
+| `mongoose` schemas | MongoDB collections and document shape |
+
+**What to extract:**
+- Main entities/tables and their purpose
+- Key relationships (one-to-many, many-to-many, foreign keys)
+- Notable constraints (unique, nullable, indexed fields)
+- Database engine (PostgreSQL, MySQL, SQLite, MongoDB, Redis, etc.)
+- Whether migrations are managed or schema is code-first
+
+### Step 8: Map the API Surface
+Scan route and controller files to produce a summary of the exposed API.
+
+**Where to look:**
+| Pattern | Files to scan |
+|---|---|
+| Express / Fastify | `routes/`, `*.router.ts`, `app.use(...)` calls |
+| Django / Flask | `urls.py`, `views.py`, `@app.route` decorators |
+| Spring Boot | `@RestController`, `@RequestMapping` annotations |
+| Go (net/http / Gin / Echo) | `router.GET/POST/...`, handler registrations |
+| ASP.NET | `[ApiController]`, `[Route]`, `[Http*]` attributes |
+| GraphQL | `schema.graphql`, resolver files, type definitions |
+| gRPC | `.proto` files |
+| tRPC | `router.ts`, procedure definitions |
+
+**What to extract:**
+- API style: REST, GraphQL, gRPC, tRPC, or mixed
+- List of route groups or resource namespaces (e.g., `/api/users`, `/api/orders`)
+- HTTP methods and rough purpose per group (don't enumerate every endpoint — summarize by resource)
+- Authentication/authorization mechanism (JWT, session, OAuth, API key, middleware)
+- Request/response format (JSON, XML, Protobuf, multipart)
+- Versioning strategy (URL prefix `/v1/`, headers, none)
+
+### Step 9: Find the Test Setup
 - Find the command to run tests (check `scripts` in `package.json`, `Makefile`, or `README`).
 - Note coverage tooling if present.
 - Check whether tests are unit, integration, e2e, or a mix.
 
-### Step 8: Identify Gotchas
+### Step 10: Identify Gotchas
 Flag anything unusual:
 - Monkeypatching or global state
 - Deprecated dependencies or pinned older versions
@@ -158,8 +202,21 @@ Deliver the briefing as a structured markdown summary:
 ### Patterns
 - Architecture: ...
 - Naming: ...
-- Module system: ...
 - Error handling: ...
+
+### Data Model
+- Database: ...
+- Main entities: ...
+- Key relationships: ...
+
+### API Surface
+- Style: REST / GraphQL / gRPC / tRPC
+- Auth: ...
+- Route groups:
+  - `GET /api/resource` — [purpose]
+  - ...
+- Request/response format: ...
+- Versioning: ...
 
 ### Tests
 - Framework: ...
