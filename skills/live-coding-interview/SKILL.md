@@ -1,6 +1,6 @@
 ---
 name: live-coding-interview
-description: Live coding interview skill for AI coding cautiousness. Enforces disciplined AI behavior during coding sessions: read README first, plan before coding, run tests after every change, never commit without human review, and never touch protected files (tests, build configs, dependencies).
+description: "Live coding interview skill for AI coding cautiousness. Enforces disciplined AI behavior during coding sessions by reading the README first, planning before coding, running tests after every change, never committing without human review, and never touching protected files (tests, build configs, dependencies)."
 ---
 
 # Live Coding Interview Skill
