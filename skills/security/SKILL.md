@@ -1,3 +1,7 @@
+---
+name: security
+description: Security skill for implementing best practices in authentication, authorization, secure coding, data protection, vulnerability management, and compliance.
+---
 # Security Skill
 
 This skill provides guidance and best practices for implementing security in software projects. It covers topics such as authentication, authorization, secure coding, data protection, vulnerability management, and compliance.
@@ -27,5 +31,4 @@ Use this skill when you need to:
 - Review or audit code for security issues
 
 ---
-
 *Expand this SKILL.md with more detailed guidance, code examples, and references as needed for your project.*
